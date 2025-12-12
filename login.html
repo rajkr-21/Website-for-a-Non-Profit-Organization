@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Non-Profit Organization</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+     
+</head>
+
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">RK NGO</div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="login.html" class="active">Login/Signup</a>
+            <a href="about.html">About Us</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+         <h1>Signup or Login</h1>
+    <p class="lead">Proceed to Login or Signup using your <strong>email </strong>and create a strong password.</p>
+
+    <div class="tabs" role="tablist">
+      <button id="tab-login" class="tab active" aria-controls="login-form">Login</button>
+      <button id="tab-signup" class="tab" aria-controls="signup-form">Sign Up</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="login-form">
+      <label for="login-identifier">Username or Email</label>
+      <input id="login-identifier" type="text" placeholder="username or email" required />
+
+      <label for="login-password">Password</label>
+      <input id="login-password" type="password" placeholder="password" required />
+      <div class="toggle-pass" id="login-toggle">Show password</div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+        <button class="btn primary" type="submit">Login</button>
+        <button type="button" id="to-signup" class="btn ghost">Create account</button>
+      </div>
+
+      <div class="message" id="login-message" aria-live="polite"></div>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signup-form" style="display:none">
+      <label for="signup-username">Username</label>
+      <input id="signup-username" type="text" placeholder="choose a username" required />
+
+      <label for="signup-email">Email</label>
+      <input id="signup-email" type="email" placeholder="you@example.com" required />
+
+      <label for="signup-password">Password</label>
+      <input id="signup-password" type="password" placeholder="min 6 characters" required />
+
+      <label for="signup-confirm">Confirm Password</label>
+      <input id="signup-confirm" type="password" placeholder="confirm password" required />
+      <div class="toggle-pass" id="signup-toggle">Show passwords</div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+        <button class="btn primary" type="submit">Sign up</button>
+        <button type="button" id="to-login" class="btn ghost">Back to login</button>
+      </div>
+
+      <div class="message" id="signup-message" aria-live="polite"></div>
+    </form>
+
+    
+
+    </main>
+    <script>
+    // ---------- Helpers ----------
+    const $ = (sel) => document.querySelector(sel);
+    const qs = (sel) => document.querySelectorAll(sel);
+
+    // Switch tabs
+    const tabLogin = $('#tab-login');
+    const tabSignup = $('#tab-signup');
+    const loginForm = $('#login-form');
+    const signupForm = $('#signup-form');
+
+    function showTab(which){
+      if(which === 'login'){
+        tabLogin.classList.add('active'); tabSignup.classList.remove('active');
+        loginForm.style.display = ''; signupForm.style.display = 'none';
+      } else {
+        tabSignup.classList.add('active'); tabLogin.classList.remove('active');
+        signupForm.style.display = ''; loginForm.style.display = 'none';
+      }
+    }
+
+    tabLogin.addEventListener('click', () => showTab('login'));
+    tabSignup.addEventListener('click', () => showTab('signup'));
+    $('#to-signup').addEventListener('click', () => showTab('signup'));
+    $('#to-login').addEventListener('click', () => showTab('login'));
+
+    // Simple: users stored as an object map: {usernameOrEmail: {username, email, passHash}}
+    const STORAGE_KEY = 'demo_users_v1';
+
+    function loadUsers(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch(e){
+        console.error('Could not parse users', e);
+        return {};
+      }
+    }
+
+    function saveUsers(obj){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+    }
+
+    // Hash password using SubtleCrypto (SHA-256) -> hex string
+    async function hashPassword(password){
+      const enc = new TextEncoder();
+      const data = enc.encode(password);
+      const hash = await crypto.subtle.digest('SHA-256', data);
+      const bytes = new Uint8Array(hash);
+      return Array.from(bytes).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    // ---------- Signup ----------
+    $('#signup-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const u = $('#signup-username').value.trim();
+      const email = $('#signup-email').value.trim().toLowerCase();
+      const p = $('#signup-password').value;
+      const c = $('#signup-confirm').value;
+      const msg = $('#signup-message'); msg.textContent = '';
+
+      if(u.length < 2){ msg.textContent = 'Username too short.'; return }
+      if(!email.includes('@') || email.length < 5){ msg.textContent = 'Enter a valid email.'; return }
+      if(p.length < 6){ msg.textContent = 'Password must be at least 6 characters.'; return }
+      if(p !== c){ msg.textContent = 'Passwords do not match.'; return }
+
+      const users = loadUsers();
+      if(users[email] || users[u]){ msg.textContent = 'Username or email already taken.'; return }
+
+      msg.textContent = 'Creating account...';
+      const ph = await hashPassword(p);
+
+      // store user under both username and email for easy lookup
+      const profile = {username:u, email, passHash:ph, createdAt:new Date().toISOString()};
+      users[email] = profile; users[u] = profile;
+      saveUsers(users);
+
+      msg.textContent = 'Account created ✓ You can now login.';
+      // clear sensitive fields
+      $('#signup-password').value = '';
+      $('#signup-confirm').value = '';
+    });
+
+    // ---------- Login ----------
+    $('#login-form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const id = $('#login-identifier').value.trim().toLowerCase();
+      const p = $('#login-password').value;
+      const msg = $('#login-message'); msg.textContent = '';
+
+      if(!id || !p){ msg.textContent = 'Enter both fields.'; return }
+      msg.textContent = 'Checking...';
+
+      const users = loadUsers();
+      const profile = users[id];
+      if(!profile){ msg.textContent = 'No account found with that username or email.'; return }
+
+      const ph = await hashPassword(p);
+      if(ph === profile.passHash){
+        msg.textContent = `Welcome back, ${profile.username}! Login successful.`;
+        // redirect after successful login
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 800);
+        // example: set a simple logged-in flag (not secure, for demo only)
+        localStorage.setItem('demo_current_user', JSON.stringify({username:profile.username, email:profile.email}));
+      } else {
+        msg.textContent = 'Incorrect password.';
+      }
+      // clear password field
+      $('#login-password').value = '';
+    });
+
+    // ---------- Show/hide password toggles ----------
+    $('#login-toggle').addEventListener('click', ()=>{
+      const el = $('#login-password'); el.type = el.type === 'password' ? 'text' : 'password';
+      $('#login-toggle').textContent = el.type === 'password' ? 'Show password' : 'Hide password';
+    });
+
+    $('#signup-toggle').addEventListener('click', ()=>{
+      const p1 = $('#signup-password'); const p2 = $('#signup-confirm');
+      const now = p1.type === 'password' ? 'text' : 'password';
+      p1.type = p2.type = now;
+      $('#signup-toggle').textContent = now === 'password' ? 'Show passwords' : 'Hide passwords';
+    });
+
+    // ---------- Initial demo user (optional) ----------
+    (async function seedDemo(){
+      const users = loadUsers();
+      if(!users['demo@local'] && !users['demo']){
+        const ph = await hashPassword('password123');
+        const profile = {username:'demo', email:'demo@local', passHash:ph, createdAt:new Date().toISOString()};
+        users['demo'] = profile; users['demo@local'] = profile;
+        saveUsers(users);
+        console.log('Seeded demo user: demo / password123');
+      }
+    })();
+
+    // ---------- Accessibility: focus first input ----------
+    $('#login-identifier').focus();
+
+    // Note: This demo stores everything locally in the browser. For real apps, use a server and never store raw passwords client-side.
+  </script>
+
+
+    <footer class="main-footer">
+        <div class="footer-info">
+            <p>&copy; 2025 RK NGO. All rights reserved.</p>
+            <p>ABC Colony, Ghaziabad, Uttar Pradesh, India.</p>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+</body>
+</html>

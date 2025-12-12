@@ -1,0 +1,323 @@
+
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 1. Header Styling */
+.main-header {
+    background-color: #004d40; 
+    color: white;
+    padding: 15px 30px;
+    display: flex; /* Align using row Horizontally */
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.nav-links a {
+    margin-left: 25px;
+    font-size: 1em;
+    padding: 5px 10px;
+    
+}
+
+
+
+/* 2. Main Content (Body) Styling */
+.main-content {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+    background-color: white;
+    padding: 60px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.hero h1 {
+    font-size: 3em;
+    color: #004d40;
+    margin-bottom: 15px;
+}
+
+.intro {
+    font-size: 1.2em;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Goals and Purpose Section */
+.goals-purpose {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.goals-purpose h2 {
+    font-size: 2em;
+    color: #004d40;
+    margin-bottom: 30px;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Makes cards take equal width */
+    max-width: 45%;
+}
+
+.card h3 {
+    color: #00796b;
+    margin-bottom: 10px;
+}
+
+/* Donation Button Section */
+.donation-cta {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #e0f2f1; /* Very light teal background */
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.donation-cta h2 {
+    color: #004d40;
+    margin-bottom: 15px;
+}
+
+.donate-button {
+    display: inline-block;
+    background-color: #ff6f00; /* Bright Orange for the button */
+    color: white;
+    font-size: 1.2em;
+    padding: 15px 30px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    
+}
+
+
+
+/* 3. Footer Styling */
+.main-footer {
+    background-color: #333;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer-info p {
+    margin: 5px 0;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 1.5em;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #ff6f00; /* Orange hover color */
+}
+/* --- Login Page Specific Styles --- */
+
+.login-container {
+    
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-container h2 {
+    color: #004d40;
+    margin-bottom: 25px;
+}
+
+.login-form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+
+.login-form button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.signup-link {
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+.signup-link a {
+    color: #00796b;
+    font-weight: bold;
+}
+/* --- About Us Page CSS --- */
+
+.mission-vision {
+    margin-bottom: 40px;
+}
+
+.team-section {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.team-member {
+    background-color: white;
+    padding: 15px;
+    margin: 15px auto;
+    border-radius: 4px;
+    width: 60%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.team-member h4 {
+    color: #00796b;
+    margin-bottom: 5px;
+}
+
+.team-member p {
+    font-size: 0.9em;
+    color: #666;
+}
+
+  /* CSS for Login Form */
+     
+
+        /* Styling for the main heading */
+        h1 {
+            color: #004d40; /* Dark Teal, consistent with the NGO theme */
+            margin-bottom: 25px;
+        }
+
+        /* Styling for the form container */
+        #myForm {
+            
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Style for the labels */
+        label {
+            display: block; /* Makes the label take its own line */
+            margin-bottom: 5px;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Styling for all input fields */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 2px; /* Reduced margin to bring error closer */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+            transition: border-color 0.3s;
+        }
+
+        /* Focus state for inputs */
+        input:focus {
+            border-color: #00796b; /* Lighter Teal border when active */
+            outline: none;
+        }
+
+        /* Error message styling */
+        .error {
+            color: #d9534f; /* A strong red */
+            font-size: 0.85em; /* Slightly smaller font for error */
+            display: block; /* Ensures the error message is below the input */
+            height: 1.2em; /* Gives a fixed space for the error to appear */
+        }
+
+        /* Styling for the submit button */
+        button {
+            background-color: #ff6f00; /* Bright Orange, consistent with the NGO Donate button */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;  /* Cursor changes to pointer icon */
+            font-size: 1em;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e65100; /* Darker orange on hover */
+            
+        }      
+   
